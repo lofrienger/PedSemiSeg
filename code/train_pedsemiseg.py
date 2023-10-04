@@ -1,32 +1,23 @@
 import argparse
+import copy
 import logging
 import os
 import random
 import sys
-import copy
 
 import numpy as np
 import torch
 import torch.backends.cudnn as cudnn
-import torch.nn as nn
-import torch.nn.functional as F
 import torch.optim as optim
-import torch.distributed as dist
-import torch.multiprocessing as mp
-from torch.nn.modules.loss import CrossEntropyLoss
-from torch.nn.parallel import DistributedDataParallel as DDP
-from torch.utils.data import DataLoader
+from dataloaders.dataset import (MultiAugment_polyp, PolypDataset,
+                                 TwoStreamBatchSampler, trsf_valid_image_224)
+from networks.net_factory import net_factory
 from torch.distributions import Categorical
+from torch.nn.modules.loss import CrossEntropyLoss
+from torch.utils.data import DataLoader
 from torchvision import transforms
 from tqdm import tqdm
-
-from dataloaders.dataset import (
-    PolypDataset, trsf_valid_image_224,
-    TwoStreamBatchSampler,
-    MultiAugment_polyp,
-)
-from networks.net_factory import net_factory
-from utils import losses, metrics, ramps, util
+from utils import losses, ramps
 from val_2D import test_polyp_batch
 
 parser = argparse.ArgumentParser()
@@ -42,14 +33,13 @@ parser.add_argument("--num_classes", type=int, default=2, help="output channel o
 parser.add_argument("--conf_thresh", type=float, default=0.8, help="confidence threshold for using pseudo-labels")
 
 parser.add_argument('--comp_loss', type=str, default='True', help='use complement loss or not')
-parser.add_argument('--peer_loss', type=str, default='True', help='use complement loss or not')
+parser.add_argument('--peer_loss', type=str, default='True', help='use peer loss or not')
 
 parser.add_argument("--labeled_bs", type=int, default=8, help="labeled_batch_size per gpu")
 parser.add_argument('--labeled_ratio', type=float, default=0.5, help='ratio of labeled data')
 
 parser.add_argument("--consistency_strategy", type=str, default="exp", help="consistency update strategy")
-parser.add_argument("--consistency_init", type=float, default=0, help="start consistency")
-parser.add_argument("--consistency", type=float, default=0.1, help="consistency")
+parser.add_argument("--consistency", type=float, default=1, help="consistency")
 parser.add_argument('--consistency_rampup', type=float, default=5000.0, help='consistency_rampup')
 
 args = parser.parse_args()

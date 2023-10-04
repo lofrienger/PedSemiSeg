@@ -1,13 +1,19 @@
-# PedSemiSeg: 
+# PedSemiSeg
 
 ## Introduction
 
-This is the pytorch implementation of the paper entitled "PedSemiSeg: **Ped**agogy-inspired **Semi**-supervised Polyp **Seg**mentation", whcih was submitted to *ICRA2024*.
-
-Recent advancements in deep learning techniques have contributed to developing improved polyp segmentation methods, thereby aiding in the diagnosis of colorectal cancer and facilitating endoscopic submucosal dissection (ESD) surgery. However, the scarcity of well-annotated data poses challenges by increasing the annotation burden and diminishing the performance of fully-supervised learning approaches. To address this challenge, we present *PedSemiSeg*, a pedagogy-inspired semi-supervised learning framework designed to enhance polyp segmentation performance with limited labeled training data. In particular, we take inspiration from the pedagogy used in real-world educational settings, where teacher feedback and peer learning are crucial in influencing the overall learning outcome. Expanding upon this concept, our approach involves supervising the outputs of the strongly augmented input (the students) using the pseudo and complementary labels crafted from the output of the weakly augmented input (the teacher) in a positive and negative learning manner. Additionally, we incorporate entropy-guided reciprocal peer learning among the students. With these holistic learning processes, we aim to ensure consistent predictions for various versions of the same input. The experimental results illustrate the superiority of our method in polyp segmentation across various ratios of labeled data. Furthermore, our approach also generalizes well on external datasets, which are unseen during training, highlighting its broader clinical significance in practice. 
+Pytorch implementation of "PedSemiSeg: **Ped**agogy-inspired **Semi**-supervised Polyp **Seg**mentation", submitted to *ICRA2024*.
 
 ![PedSemiSeg](Image/PedSemiSeg.png?raw=true "PedSemiSeg")
 *Overall diagram of our proposed PedSemiSeg, a pedagogy-inspired semi-supervised approach for label-efficient polyp segmentation.*
+
+Recent advancements in deep learning techniques have contributed to developing improved polyp segmentation methods, thereby aiding in the diagnosis of colorectal cancer and facilitating endoscopic submucosal dissection (ESD) surgery. However, the scarcity of well-annotated data poses challenges by increasing the annotation burden and diminishing the performance of fully-supervised learning approaches. 
+
+To address this challenge, we present *PedSemiSeg*, a pedagogy-inspired semi-supervised learning framework designed to enhance polyp segmentation performance with limited labeled training data. In particular, we take inspiration from the pedagogy used in real-world educational settings, where teacher feedback and peer learning are crucial in influencing the overall learning outcome. Expanding upon this concept, our approach involves supervising the outputs of the strongly augmented input (the students) using the pseudo and complementary labels crafted from the output of the weakly augmented input (the teacher) in a positive and negative learning manner. Additionally, we incorporate entropy-guided reciprocal peer learning among the students. With these holistic learning processes, we aim to ensure consistent predictions for various versions of the same input. 
+
+The experimental results illustrate the superiority of our method in polyp segmentation across various ratios of labeled data. Furthermore, our approach also generalizes well on external datasets, which are unseen during training, highlighting its broader clinical significance in practice. 
+
+
 
 ## Environment
 - NVIDIA RTX3090
@@ -30,9 +36,9 @@ Recent advancements in deep learning techniques have contributed to developing i
     ```
 - Some essential hyperparameters:
   
-    - *mps* and *mps_type*: Whether apply **Mutual Teaching** and its type (*entropy* is our entropy-guided fusion);
-    - *cps*: Apply **Ensemble Learning** or not;
-    - Refer to [train_pedsemiseg.py](code/train_s2me.py) for more explanation on other hyperparameters.
+    - *comp_loss* and *peer_loss* control the complementary loss and peer loss, respectively;
+    - *labeled_ratio* controls the ratio of labeled data;
+    - Refer to [train_pedsemiseg.py](code/train_pedsemiseg.py) for details on other hyperparameters.
 
 
 
