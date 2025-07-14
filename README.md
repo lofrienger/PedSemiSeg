@@ -4,6 +4,8 @@
 
 Pytorch implementation of "PedSemiSeg: **Ped**agogy-inspired **Semi**-supervised Polyp **Seg**mentation".
 
+Accepted by [Computerized Medical Imaging and Graphics](https://doi.org/10.1016/j.compmedimag.2025.102591).
+
 ![PedSemiSeg](Image/PedSemiSeg.png?raw=true "PedSemiSeg")
 *Overall diagram of our proposed PedSemiSeg, a pedagogy-inspired semi-supervised approach for label-efficient polyp segmentation.*
 
